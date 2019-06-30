@@ -10,13 +10,13 @@ private:
     std::fstream* source_code_file;
     //! Private atribute,
     /*!the file being assembled in our representation.*/
-    TupleList file_being_assembled;
+    TupleList file_being_translated;
     const std::map<std::string, uint8_t> mem_spaces_MP = {
-        {"ADD", 2},
+        {"ADD", 1},
         {"SUB", 2},
         {"MULT", 2},
         {"DIV", 2},
-        {"JMP", 2},
+        {"JMP", 1},
         {"JMPN", 2},
         {"JMPP", 2},
         {"JMPZ", 2},
