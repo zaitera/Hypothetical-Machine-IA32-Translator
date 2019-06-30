@@ -1,4 +1,4 @@
-LeerChar:
+LerChar:
 enter 0,0
 mov ecx, dword[ebp+8]
 mov eax, 3
