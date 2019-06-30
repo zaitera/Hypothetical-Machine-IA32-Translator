@@ -2,6 +2,14 @@
 #define TRANSLATOR_H
 #include <preprocessor.h>
 
+
+enum Section
+{
+    UNDEFINED = 0,
+    TEXT,
+    DATA,
+};
+
 class Translator
 {
 private:
@@ -11,6 +19,7 @@ private:
     //! Private atribute,
     /*!the file being assembled in our representation.*/
     TupleList file_being_translated;
+    std::fstream output_file;
     const std::map<std::string, uint8_t> mem_spaces_MP = {
         {"ADD", 1},
         {"SUB", 2},
@@ -32,7 +41,8 @@ private:
         {"S_INPUT", 3},
         {"S_OUTPUT", 3},
         {"STOP", 1},
-    };   
+    };
+    void solveDisplacement(std::vector<std::string> line, uint16_t current_token, std::string);   
 public:
     std::string file_name;
     //! Class constructor, receives a pointer to the source file.
