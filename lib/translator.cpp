@@ -25,7 +25,7 @@ void Translator::solveDisplacement(std::vector<std::string> line, uint16_t curre
     {
         this->output_file << metadata;
     }
-    if(line[current_token].substr(0, 3) != "JMP" && line[current_token]!="S_INPUT" && line[current_token]!="S_OUTPUT")
+    if(line[current_token].substr(0, 3) != "JMP" && line[current_token].substr( line[current_token].length() - 3 )!="PUT")
         this->output_file << "]";
     this->output_file << "\n";
 }
@@ -145,7 +145,7 @@ void Translator::translate(void)
                         this->output_file << "push ecx\n";
                         this->output_file << "push edx\n";
                         
-                        solveDisplacement(line,current_token,"push dword["+line[current_token+1]);
+                        solveDisplacement(line,current_token,"push "+line[current_token+1]);
                         
                         this->output_file << "call LerInteiro\n";
 
@@ -159,7 +159,7 @@ void Translator::translate(void)
                         this->output_file << "push ecx\n";
                         this->output_file << "push edx\n";
                         
-                        solveDisplacement(line,current_token,"push dword["+line[current_token+1]);
+                        solveDisplacement(line,current_token,"push "+line[current_token+1]);
                         
                         this->output_file << "call EscreverInteiro\n";
 
@@ -173,7 +173,7 @@ void Translator::translate(void)
                         this->output_file << "push ecx\n";
                         this->output_file << "push edx\n";
                         
-                        solveDisplacement(line,current_token,"push dword["+line[current_token+1]);
+                        solveDisplacement(line,current_token,"push "+line[current_token+1]);
                         
                         this->output_file << "call LerHexa\n";
 
@@ -187,7 +187,7 @@ void Translator::translate(void)
                         this->output_file << "push ecx\n";
                         this->output_file << "push edx\n";
                         
-                        solveDisplacement(line,current_token,"push dword["+line[current_token+1]);
+                        solveDisplacement(line,current_token,"push "+line[current_token+1]);
                         
                         this->output_file << "call EscreverHexa\n";
 
@@ -201,7 +201,7 @@ void Translator::translate(void)
                         this->output_file << "push ecx\n";
                         this->output_file << "push edx\n";
                         
-                        solveDisplacement(line,current_token,"push dword["+line[current_token+1]);
+                        solveDisplacement(line,current_token,"push "+line[current_token+1]);
                         
                         this->output_file << "call LerChar\n";
 
@@ -215,7 +215,7 @@ void Translator::translate(void)
                         this->output_file << "push ecx\n";
                         this->output_file << "push edx\n";
                         
-                        solveDisplacement(line,current_token,"push dword["+line[current_token+1]);
+                        solveDisplacement(line,current_token,"push "+line[current_token+1]);
                         
                         this->output_file << "call EscreverChar\n";
 
