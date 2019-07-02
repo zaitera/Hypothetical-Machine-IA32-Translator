@@ -168,6 +168,34 @@ void Translator::translate(void)
                         this->output_file << "pop ebx\n";
                         functs_to_load.push_back("writeInt");
                         break;
+                    case HashStringToInt("H_INPUT"):
+                        this->output_file << "push ebx\n";
+                        this->output_file << "push ecx\n";
+                        this->output_file << "push edx\n";
+                        
+                        solveDisplacement(line,current_token,"push dword["+line[current_token+1]);
+                        
+                        this->output_file << "call LerHexa\n";
+
+                        this->output_file << "pop edx\n";
+                        this->output_file << "pop ecx\n";
+                        this->output_file << "pop ebx\n";
+                        functs_to_load.push_back("readHex");
+                        break;
+                    case HashStringToInt("H_OUTPUT"):
+                        this->output_file << "push ebx\n";
+                        this->output_file << "push ecx\n";
+                        this->output_file << "push edx\n";
+                        
+                        solveDisplacement(line,current_token,"push dword["+line[current_token+1]);
+                        
+                        this->output_file << "call EscreverHexa\n";
+
+                        this->output_file << "pop edx\n";
+                        this->output_file << "pop ecx\n";
+                        this->output_file << "pop ebx\n";
+                        functs_to_load.push_back("writeHex");
+                        break;
                     case HashStringToInt("C_INPUT"):
                         this->output_file << "push ebx\n";
                         this->output_file << "push ecx\n";
