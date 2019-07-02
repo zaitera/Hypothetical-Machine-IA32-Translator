@@ -64,11 +64,12 @@ void Translator::translate(void)
             {
                 section = TEXT;
                 this->output_file<<"section .text\n";
-                this->output_file<<"__start:\n";                
+                this->output_file<<"_start:\n";                
             }else if(line[1] == "DATA") 
             {
                 section = DATA;
                 this->output_file<<"section .data\n";
+				this->output_file << "__min_int db \"-2147483648\"" << std::endl;
             }
             continue;
         }
@@ -96,7 +97,7 @@ void Translator::translate(void)
                         solveDisplacement(line,current_token, aux+" eax, dword["+line[current_token+1]);
                         break;
                     case HashStringToInt("MULT"):
-                        solveDisplacement(line,current_token,"imul dword[");
+                        solveDisplacement(line,current_token,"imul dword["+line[current_token+1]);
                         break;
                     case HashStringToInt("DIV"):
                         this->output_file << "cdq\n";
