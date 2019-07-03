@@ -31,7 +31,7 @@ sub ebx, 32
 cmp ebx, 10  ; if < 'a'(10)
 jl __endErrorHexa
 cmp ebx, 15  ; if > 'a'(15)
-jl __endErrorHexa
+jg __endErrorHexa
 ret
 
 __loopReadHex:
@@ -62,6 +62,6 @@ ret
 
 __endErrorHexa:
 mov ecx, [ebp+8]        ; eax = (&value)
-mov dword[ecx], 0            ; eax = *(&value)
+mov dword[ecx], 0       ; eax = *(&value)
 mov eax, 0
 jmp __endLerHexa

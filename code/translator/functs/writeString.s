@@ -1,21 +1,19 @@
 EscreverString: ; Label in Portuguese due to teacher's requirements
 enter 4,0
-mov dword[ebp-4], 0
-mov ebx, 1
-mov edx, 1
-mov ecx, dword[ebp + 12]
+mov ecx, dword[ebp + 12] ; size
 __repeatWriteString:
-mov eax, 4
 push ecx
+mov eax, 4
+mov ebx, 1
 mov ecx, dword[ebp+8]
+mov edx, 1
 int 0x80
-mov eax, ecx
-inc ecx
-inc dword[ebp-4]
-cmp byte[eax], 0xA
+mov eax, ecx    ;string[i]
+inc ecx         ;string[i+1]
+inc dword[ebp-4]    ; count++
 mov dword[ebp + 8], ecx
 pop ecx
 loopne __repeatWriteString
-mov eax, [ebp-4]
+mov eax, [ebp+12] ; size
 leave
 ret 8

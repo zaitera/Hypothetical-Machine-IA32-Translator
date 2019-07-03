@@ -1,5 +1,6 @@
 EscreverHexa: ; Label in Portuguese due to teacher's requirements
-enter 32,0
+enter 36,0
+mov dword[ebp-36], 0
 mov esi, 32         ; i = 8
 mov eax, [ebp+8]    ; eax = &value
 mov eax, [eax]      ; eax = *(&value)
@@ -10,6 +11,9 @@ div ecx             ; eax = value/16, edx = value%16
 mov ebx, ebp
 sub ebx, esi
 mov dword[ebx], edx ; output[i] = value%16
+inc dword[ebp-36]
+cmp eax, 0
+je __printHex
 sub esi, 4          ; i--
 cmp esi, 0          ; if i!=0, repeat
 jne __loopWriteHexa
@@ -31,5 +35,6 @@ int 80h
 add esi, 4          ; i++
 cmp esi, 33         ; if i != 8 repeat
 jl __printHex
+mov eax, dword[ebp-36]
 leave               ; end EscreverHexa
 ret

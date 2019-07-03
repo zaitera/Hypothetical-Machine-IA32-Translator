@@ -1,6 +1,6 @@
 LerInteiro: ; Label in Portuguese due to teacher's requirements
 enter 4,0
-mov dword[ebp-4], 1 ; flag
+mov dword[ebp-4], 1 ; qtd read
 
 mov eax, 3
 mov ebx, 0
