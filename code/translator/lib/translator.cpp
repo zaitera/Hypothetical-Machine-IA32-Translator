@@ -94,49 +94,55 @@ void Translator::translate(void)
                     case HashStringToInt("SUB"):
                         aux = "   ";
                         std::transform(line[current_token].begin(), line[current_token].end(),aux.begin(), ::tolower);
-                        solveDisplacement(line,current_token, aux+" eax, dword["+line[current_token+1]);
+                        solveDisplacement(line,current_token, aux+" ebx, dword["+line[current_token+1]);
                         break;
                     case HashStringToInt("MULT"):
+                        this->output_file << "push eax\n";                        
                         solveDisplacement(line,current_token,"imul dword["+line[current_token+1]);
+                        this->output_file << "mov ebx, eax\n";
+                        this->output_file << "pop eax\n";
                         break;
                     case HashStringToInt("DIV"):
+                        this->output_file << "push eax\n";
                         this->output_file << "cdq\n";
                         solveDisplacement(line,current_token,"idiv dword["+line[current_token+1]);
+                        this->output_file << "mov ebx, eax\n";
+                        this->output_file << "pop eax\n";
                         break;
                     case HashStringToInt("JMP"):
                         solveDisplacement(line,current_token,"jmp "+line[current_token+1]);
                         break;
                     case HashStringToInt("JMPP"):
-                        this->output_file << "cmp eax, 0" << std::endl;
+                        this->output_file << "cmp ebx, 0" << std::endl;
                         solveDisplacement(line,current_token,"jg " + line[current_token+1]);
                         break;
                     case HashStringToInt("JMPN"):
-                        this->output_file << "cmp eax, 0" << std::endl;
+                        this->output_file << "cmp ebx, 0" << std::endl;
                         solveDisplacement(line,current_token,"jl "+ line[current_token+1]);
                         break;
                     case HashStringToInt("JMPZ"):
-                        this->output_file << "cmp eax, 0" << std::endl;
+                        this->output_file << "cmp ebx, 0" << std::endl;
                         solveDisplacement(line,current_token,"je "+line[current_token+1]);
                         break;
                     case HashStringToInt("COPY"):
-                        solveDisplacement(line,current_token,"mov ebx, dword["+line[current_token+1]);
+                        solveDisplacement(line,current_token,"mov ecx, dword["+line[current_token+1]);
                         if (line.size()-current_token>5 && line[line.size()-2] == "+")
                         {
-                            this->output_file << "mov dword["<< line[line.size()-3]<<" + " << std::stoi(line[line.size()-1])*4<<"], ebx\n";                        
+                            this->output_file << "mov dword["<< line[line.size()-3]<<" + " << std::stoi(line[line.size()-1])*4<<"], ecx\n";                        
                         }else
                         {
-                            this->output_file << "mov dword["<< line[line.size()-1]<<"]"<<", ebx\n";
+                            this->output_file << "mov dword["<< line[line.size()-1]<<"]"<<", ecx\n";
                         }
                         break;
                     case HashStringToInt("LOAD"):
-                        solveDisplacement(line,current_token,"mov eax, dword["+line[current_token+1]);
+                        solveDisplacement(line,current_token,"mov ebx, dword["+line[current_token+1]);
                         break;
                     case HashStringToInt("STORE"): 
                         if(line.size()-current_token>3 && line[current_token+2] == "+"){
-                            this->output_file << "mov dword["<<line[current_token+1] <<" + " << std::stoi(line[current_token+3])*4<<"], eax\n";
+                            this->output_file << "mov dword["<<line[current_token+1] <<" + " << std::stoi(line[current_token+3])*4<<"], ebx\n";
                         }else
                         {
-                            this->output_file << "mov dword["<<line[current_token+1] <<"], eax\n";
+                            this->output_file << "mov dword["<<line[current_token+1] <<"], ebx\n";
                             
                         }
                         break;
