@@ -98,12 +98,14 @@ void Translator::translate(void)
                         break;
                     case HashStringToInt("MULT"):
                         this->output_file << "push eax\n";                        
+                        this->output_file << "mov eax, ebx\n";
                         solveDisplacement(line,current_token,"imul dword["+line[current_token+1]);
                         this->output_file << "mov ebx, eax\n";
                         this->output_file << "pop eax\n";
                         break;
                     case HashStringToInt("DIV"):
                         this->output_file << "push eax\n";
+                        this->output_file << "mov eax, ebx\n";
                         this->output_file << "cdq\n";
                         solveDisplacement(line,current_token,"idiv dword["+line[current_token+1]);
                         this->output_file << "mov ebx, eax\n";
