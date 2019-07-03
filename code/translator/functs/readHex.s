@@ -1,5 +1,4 @@
-
-LerHexa:
+LerHexa: ; Label in Portuguese due to teacher's requirements
 enter 8, 0
 mov eax, dword[ebp+8]
 mov dword[eax], 0

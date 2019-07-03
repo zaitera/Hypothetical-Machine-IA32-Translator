@@ -1,68 +1,68 @@
-LerInteiro:
+LerInteiro: ; Label in Portuguese due to teacher's requirements
 enter 4,0
-mov dword[ebp-4], 1 ; count = 1
+mov dword[ebp-4], 1 ; flag
 
 mov eax, 3
 mov ebx, 0
-mov ecx, dword[ebp+8]; label
+mov ecx, dword[ebp+8]; &Label
 mov edx, 1
 int 0x80
 
 cmp byte[ecx], 0x2D ; if label[0] == '-'
-je __negative_read  ; goto
-push 0              ; flag = 0 if positive
-mov eax, dword[ecx] 
-sub eax, 0x30       ; eax = char2int(label[0])
+je __negativeReadInt  
+push 0              ; value = 0 save in ebp-4
+mov eax, dword[ecx] ; eax = *(&Label)
+sub eax, 0x30       ; eax = char2int(Label)
 
-__positive_read:
-call __digit  
-push eax
-mov ecx, 11
+__positiveReadInt:
+call __digit        ; check if is 0~9 digit
+push eax            ; save first digit in ebp-8
+mov ecx, 11         ; i = 11
 
-__loop_read:
+__loopReadInt:
 mov eax, 3
-push ecx
-mov ecx, dword[ebp + 8] ; label
+push ecx            ; push i
+mov ecx, dword[ebp + 8] ; ecx = &Label
 int 0x80
-cmp byte[ecx], 0xA  ; if label[] == ENTER
-je __end_read       ; goto
-mov eax, dword[ecx] ; 
+cmp byte[ecx], 0xA  ; if Label == ENTER
+je __endReadInt       
+mov eax, dword[ecx] ; eax = *(&Label) 
 sub eax, 0x30       ; eax = char2int (label[])
-call __digit    
-mov dword[ecx], eax ; label = char2int() 
-mov eax, [esp + 4]
+call __digit        ; check if is 0~9 digit
+mov dword[ecx], eax ; new = char2int() 
+mov eax, [esp + 4]  ; eax = value, first time is 0->pos, 1->neg
 sal eax, 3
 add eax, [esp+4]
 add eax, [esp+4]
-add eax, [ecx]      ; eax = count*10 + label
-pop ecx
-mov [esp], eax
-inc dword[ebp-4] ; count++;
-loop __loop_read
+add eax, [ecx]      ; eax = value*10 + new
+pop ecx             ; ecx = i
+mov [esp], eax      ;
+inc dword[ebp-4]    ; flag--
+loop __loopReadInt    ; while (i>0)
 
-__end_read:
+__endReadInt:
 pop eax
 pop eax
 pop ecx
 cmp ecx, 0
-je __no_signal
+je __noSignalInt
 neg eax
 
-__no_signal:
+__noSignalInt:
 mov ecx, [ebp + 8]
 mov [ecx], eax
 mov eax, [ebp -4]
 leave
 ret 4
 
-__negative_read:
-push 1              ; flag = 0 if negative
+__negativeReadInt:
+push 1              ; save first digit in ebp-4
 mov eax, 0
-jmp __positive_read
+jmp __positiveReadInt
 
 __digit:
 cmp eax, 9
-jg __end_read;__print_err_int_read
+jg __endReadInt;__print_err_int_read
 cmp eax, 0
-jl __end_read;__print_err_int_read
+jl __endReadInt;__print_err_int_read
 ret 0
